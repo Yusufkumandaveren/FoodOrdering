@@ -7,13 +7,13 @@ import Button from "@components/Button";
 
 const sizes = ["S", "M", "L", "XL"];
 
-const addToCart = () => {
-}
 
 const ProducDetailScreen = () => {
   const { id } = useLocalSearchParams();
   const [selectedSize, setSelectedSize] = useState('M');
-  console.warn('Adding to cart, size:' + selectedSize);
+  const addToCart = () => {
+    console.warn('Adding to cart, size:' + selectedSize);
+  }
 
   const product = products.find((p) => p.id.toString() === id);
 
