@@ -1,20 +1,26 @@
-import { Platform, StyleSheet, Text, View } from 'react-native'
+import { Platform, StyleSheet, FlatList, View } from 'react-native'
 import { StatusBar } from 'expo-status-bar';
+import { useCart } from '@/providers/CartProvider'
+import CartListItem from '@/components/CartListItem';
 
-import React from 'react'
+
 
 const CartScreen = () => {
+  const {items, } = useCart()
   return (
     <View>
-      <Text style={styles.cart}>cart</Text>
+      <FlatList 
+      data= {items}
+      renderItem={({item})=><CartListItem cartItem={item} />}
+      contentContainerStyle={{padding:10, gap:10}}
+      />
 
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-
     </View>
   )
 }
 
-export default CartScreen
+export default CartScreen;
 
 const styles = StyleSheet.create({
     cart:{
