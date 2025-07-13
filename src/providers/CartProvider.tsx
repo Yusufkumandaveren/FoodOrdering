@@ -6,6 +6,7 @@ type CartType = {
   items: CartItem[];
   addItem: (product: Product, size: CartItem["size"]) => void;
   updateQuantity: (itemId: string, amount: -1 | 1) => void;
+  total: number;
 };
 
 // dont use export beacuse we are used export from useCart
@@ -13,6 +14,7 @@ const CartContext = createContext<CartType>({
   items: [],
   addItem: () => {},
   updateQuantity: () => {},
+  total: 0,
 });
 
 const CartProvider = ({ children }: PropsWithChildren) => {
@@ -28,22 +30,31 @@ const CartProvider = ({ children }: PropsWithChildren) => {
       quantity: 1,
     };
     setItems([newCartItem, ...items]);
+
+    const existingItem = items.find((item)=> item.product === product && item.size === size  )
+    if(existingItem){
+      updateQuantity(existingItem.id, 1);
+      return;
+    }
   };
+
 
   // update quantity
   const updateQuantity = (itemId: string, amount: -1 | 1) => {
     setItems(
       items.map((item) =>
         item.id === itemId
-          ? item
-          : { ...item, quantity: item.quantity + amount }
+          ? { ...item, quantity: item.quantity + amount }
+          : item
       ).filter((item)=> item.quantity > 0)
     );
+    
   };
+  const total = items.reduce((sum, item)=> (sum += item.product.price * item.quantity), 0)
+  //            items.reduce((sum= birikimlerin toplami, item= suanki deger)=> (islem), 0 = baslangic degeri ) 
 
-  console.log(items);
   return (
-    <CartContext.Provider value={{ items, addItem, updateQuantity }}>
+    <CartContext.Provider value={{ items, addItem, updateQuantity, total }}>
       {children}
     </CartContext.Provider>
   );
