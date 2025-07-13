@@ -2,7 +2,7 @@ import { StyleSheet, Text, Image, Pressable } from "react-native";
 import React from "react";
 import Colors from "../../constants/Colors";
 import { Product } from "../types";
-import { Link } from "expo-router";
+import { Link, useSegments } from "expo-router";
 
 type ProductListItemProps = {
   product: Product;
@@ -12,11 +12,12 @@ export const defaultPizzaImage =
   "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/food/default.png";
 
 export default function ProductListItem({ product }: ProductListItemProps) {
+  const segments = useSegments();
+
+  const productRoute = `/${segments[0]}/menu/${product.id}` as `${string}:${string}`
+
   return (
-    <Link href={{
-      pathname:'/menu/[id]',
-      params:{id:`${product.id}`}
-    }} asChild >
+    <Link href={productRoute} asChild >
       <Pressable  style={styles.container} >
         <Image
           style={styles.image}
@@ -29,7 +30,10 @@ export default function ProductListItem({ product }: ProductListItemProps) {
     </Link>
   );
 }
-
+/* {
+      pathname:'/menu/[id]',
+      params:{id:`${product.id}`}
+    } */
 const styles = StyleSheet.create({
   container:{
     backgroundColor: "white",
