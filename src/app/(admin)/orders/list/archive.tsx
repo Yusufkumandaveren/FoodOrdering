@@ -6,7 +6,7 @@ import { FlatList } from "react-native";
 export default function OrderScreen() {
   return (
     <>
-      <Stack.Screen options={{ title: "Orders" }} />
+      <Stack.Screen options={{ title: "Archive" }} />
       <FlatList
         data={orders}
         renderItem={({ item }) => <OrderListItem order={item} />}
